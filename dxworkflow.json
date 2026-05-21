@@ -1,117 +1,43 @@
 {
-  "name": "eggd_<tool_name>",
-  "title": "eggd_<tool_name>",
-  "summary": "description",
-  "dxapi": "1.0.0",
-  "version": "1.0.0",
-  "properties": {
-    "githubRelease": "1.0.0"
-    },
-  "inputSpec": [
+  "name": "eggd_star_ctat_workflow_v1.0.0",
+  "title": "eggd_star_ctat_workflow_v1.0.0",
+  "summary": "eggd_staraligner v1.0.3 and eggd_ctatsplicing v1.0.0 Workflow",
+  "stages": [
     {
-      "name": "input_file",
-      "class": "file",
-      "optional": true,
-      "label": "Name of input file",
-      "patterns": [
-        "*.tsv", "*.vcf", "*.bed", "*.xlsx"
-      ],
-      "help": "Description"
+      "id": "stage-staraligner",
+      "executable": "app-eggd_staraligner/1.0.3",
+      "folder": "/eggd_staraligner_v1.0.3"
     },
     {
-      "name": "input_file_array",
-      "class": "array:file",
-      "optional": false,
-      "label": "Name of input file array",
-      "suggestions": [
-        {
-        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
-        "path": "/folder1/folder2/"
-        }
-      ],
-      "help": "Description"
-    },
-    {
-      "name": "input_boolean",
-      "class": "boolean",
-      "optional": true,
-      "default": true,
-      "label": "Name of field",
-      "help": "Description"
-    },
-    {
-      "name": "input_string",
-      "class": "string",
-      "label": "Input string field name",
-      "optional": true,
-      "default": "default string input",
-      "help": "Description"
-    }
-  ],
-  "outputSpec": [
-    {
-      "name": "output_file",
-      "class": "file",
-      "label": "output file",
-      "patterns": [
-        "*.tsv", "*.vcf", "*.bed", "*.xlsx"
-      ],
-      "help": "Description"
-    },
-    {
-      "name": "output_files_array",
-      "class": "array:file",
-      "label": "output files",
-      "optional": true,
-      "help": "Description"
-    }
-
-  ],
-  "runSpec": {
-    "timeoutPolicy": {
-      "*": {
-        "hours": 2
-      }
-    },
-    "distribution": "Ubuntu",
-    "release": "20.04",
-    "version": "0",
-    "interpreter": "bash",
-    "file": "src/code.sh",
-    "assetDepends": [
-      {
-        "name": "bedtools",
-        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
-        "folder": "/app_assets/bedtools/bedtools_v2.30.0",
-        "version": "2.30.0"
-      },
-      {
-        "name": "htslib",
-        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
-        "folder": "/app_assets/htslib/htslib_v1.15.0",
-        "version": "1.15.0"
-      },
-      {
-        "name": "python_packages",
-        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
-        "folder": "/app_assets/python_packages/python_packages_v1.1.0",
-        "version": "1.1.0"
-      }
-    ]
-  },
-  "developers":[
-    "org-emee_1"
-  ],
-  "authorizedUsers": [
-    "org-emee_1"
-  ],
-  "regionalOptions": {
-    "aws:eu-central-1": {
-      "systemRequirements": {
-        "*": {
-          "instanceType": "mem1_ssd1_v2_x2"
+      "id": "stage-ctatsplicing",
+      "executable": "app-eggd_ctatsplicing/1.0.0",
+      "folder": "/eggd_ctatsplicing_v1.0.0",
+      "input": {
+        "bam": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "output_bam"
+          }
+        },
+        "bam_index": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "output_bam_bai"
+          }
+        },
+        "splice_junction": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "splice_junctions"
+          }
+        },
+        "chimeric_junction": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "chimeric_junctions"
+          }
         }
       }
     }
-  }
+  ]
 }
