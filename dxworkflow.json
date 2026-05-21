@@ -1,0 +1,43 @@
+{
+  "name": "eggd_star_ctat_workflow_v1.0.0",
+  "title": "eggd_star_ctat_workflow_v1.0.0",
+  "summary": "eggd_staraligner v1.0.3 and eggd_ctatsplicing v1.0.0 Workflow",
+  "stages": [
+    {
+      "id": "stage-staraligner",
+      "executable": "app-eggd_staraligner/1.0.3",
+      "folder": "/eggd_staraligner_v1.0.3"
+    },
+    {
+      "id": "stage-ctatsplicing",
+      "executable": "app-eggd_ctatsplicing/1.0.0",
+      "folder": "/eggd_ctatsplicing_v1.0.0",
+      "input": {
+        "bam": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "output_bam"
+          }
+        },
+        "bam_index": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "output_bam_bai"
+          }
+        },
+        "splice_junction": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "splice_junctions"
+          }
+        },
+        "chimeric_junction": {
+          "$dnanexus_link": {
+            "stage": "stage-staraligner",
+            "outputField": "chimeric_junctions"
+          }
+        }
+      }
+    }
+  ]
+}
