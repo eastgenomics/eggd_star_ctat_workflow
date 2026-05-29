@@ -6,12 +6,12 @@
     {
       "id": "stage-staraligner",
       "executable": "app-eggd_staraligner/1.0.3",
-      "folder": "/eggd_staraligner_v1.0.3"
+      "folder": "./eggd_staraligner_v1.0.3"
     },
     {
       "id": "stage-ctatsplicing",
       "executable": "app-eggd_ctatsplicing/1.0.0",
-      "folder": "/eggd_ctatsplicing_v1.0.0",
+      "folder": "./eggd_ctatsplicing_v1.0.0",
       "input": {
         "bam": {
           "$dnanexus_link": {
